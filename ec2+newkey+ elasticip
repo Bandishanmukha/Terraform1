@@ -1,0 +1,26 @@
+# have a look n ec2+key& attached elp
+
+provider "aws" {
+  region = "ap-south-1"
+}
+
+#This is a single-line comment
+resource "aws_instance" "test" {
+  ami             = "ami-0a23ccb2cdd9286bb"
+  instance_type   = "t2.micro"
+  key_name = "${aws_key_pair.terraform-key.key_name}"
+  tags = {
+    name = "TESTVM"
+  }
+}
+
+
+resource "aws_key_pair" "terraform-key" {
+  key_name = "terraform-key"
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDZMwJ0gCiLlPkCEn3Sg5lEYUws3jRwNc+9x0DFrxuYk0agcBevlh9ZGGszqS3HLAnqo6puvZWEDdC4ND6JaCBcOnoB5ew+e16vY97lV5wHVQQoMhB95olmZFsUvRgylDpMo5HyRcS4a6uPNCN3UfmkdSdNlMp8iYZqf4s9YAnFa0M8RJVX2l/KSFlMZQ90hPUYodz4gpsUi6nR1J2vx9Zqv1gJUSK3DzXWSjisIlKSJw8+EeMkU+Q/w8pc2Sxe1ZyRjPIh67WtAEnEUgrkA6/hsYRGECuztdPokXMDckcjyP8NlhC2Yu7qhucvprxJfX3YM6AIHs4nZSfyO/3QTDd9WYNTcBnoxfjkwR1drsbjYJCQ1Rv3X+IbAxVEt2zNa79WYhViZfVWb2UT7V+sOhnRb4ZMVRmISAfPawpxNKp7xKrbHj04x+a8K8bKY0IYWksRZT3TSI8U2bYmkZKFPJskwkscRQfs32rKoRbFVWlEe0TEoACLxC+Q7keTX8o2r1s= root@ip-172-31-41-168"
+}
+
+resource "aws_eip" "myeip" {
+  vpc = true
+  instance = "${aws_instance.test.id}"
+}
