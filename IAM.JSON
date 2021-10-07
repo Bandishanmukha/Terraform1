@@ -1,0 +1,27 @@
+##--EC2 Can give allow access on specififc region and tags
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": "ec2:Describe*",
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:StartInstances",
+                "ec2:StopInstances",
+                "ec2:RebootInstances"
+            ],
+            "Resource": [
+                "arn:aws:ec2:ap-south-1:934364089074:instance/*"
+            ],
+            "Condition": {
+                "StringEquals": {
+                    "aws:ResourceTag/key1": "value1"
+                }                    
+            }
+        }
+    ]
+}
